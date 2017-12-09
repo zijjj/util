@@ -1,6 +1,28 @@
 import axios from "axios";
 
 /**
+ * 计算页面rem
+ * @param  {Number} manuscriptWidth [设计稿宽度 默认750px]
+ */
+function rem(manuscriptWidth = 750) {
+    function resizeBaseFontSize(){
+        let rootHtml = document.documentElement,
+            deviceWidth = rootHtml.clientWidth;
+
+        if(deviceWidth > manuscriptWidth){
+            deviceWidth = manuscriptWidth;
+        }
+
+        rootHtml.style.fontSize = deviceWidth / (manuscriptWidth / 100) + "px";
+    }
+
+    resizeBaseFontSize();
+
+    window.addEventListener("resize", resizeBaseFontSize, false);
+    window.addEventListener("orientationchange", resizeBaseFontSize, false);
+}
+
+/**
  * 原生js操作cookie
  */
 function addCookie(objName, objValue, objHours) {
@@ -94,9 +116,33 @@ function checkLogin(callback, config = {loginUrl: "", oauth: "", activity_id: 1}
     }
 }
 
+/**
+ * 格式化时间函数
+ * @param  {[type]} fmt  ["yyyy-MM-DD HH:mm:ss:S q"]
+ * @param  {[type]} date [new Data();  时间对象]
+ * @return {[type]}      ["2017-12-09 12:22:03:233 4"]
+ */
+function dateFtt(fmt, date) {
+    var o = {   
+        "M+": date.getMonth() + 1,                    //月份
+        "d+": date.getDate(),                         //日
+        "h+": date.getHours(),                        //小时
+        "m+": date.getMinutes(),                      //分
+        "s+": date.getSeconds(),                      //秒
+        "S": date.getMilliseconds()                   //毫秒
+        "q+": Math.floor((date.getMonth() + 3) / 3),  //季度
+    };
+    if(/(y+)/.test(fmt))
+        fmt = fmt.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
+    for(var k in o)
+        if(new RegExp("("+ k +")").test(fmt))
+    fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+    return fmt;
+} 
 
 //导出
 export default {
+    rem,
     addCookie,
     getCookie,
     delCookie,
@@ -104,4 +150,5 @@ export default {
     reload,
     checkLogin,
     $ajax,
+    dateFtt,
 };
