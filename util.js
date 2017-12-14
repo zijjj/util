@@ -65,7 +65,7 @@ function getQueryString(name) {
 }
 
 // 解决微信端无法使用window.location.reload()刷新页面的方法
-function reload() {
+function wechatReload() {
     const version = Math.random() * 10000;
     location.href = `${location.origin}${location.pathname}?v=${version}`;
 }
