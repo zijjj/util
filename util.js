@@ -147,7 +147,7 @@ export default {
     getCookie,
     delCookie,
     getQueryString,
-    reload,
+    wechatReload,
     checkLogin,
     $ajax,
     dateFtt,
