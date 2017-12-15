@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 /**
  * 计算页面rem
@@ -13,13 +13,13 @@ function rem(manuscriptWidth = 750) {
             deviceWidth = manuscriptWidth;
         }
 
-        rootHtml.style.fontSize = deviceWidth / (manuscriptWidth / 100) + "px";
+        rootHtml.style.fontSize = deviceWidth / (manuscriptWidth / 100) + 'px';
     }
 
     resizeBaseFontSize();
 
-    window.addEventListener("resize", resizeBaseFontSize, false);
-    window.addEventListener("orientationchange", resizeBaseFontSize, false);
+    window.addEventListener('resize', resizeBaseFontSize, false);
+    window.addEventListener('orientationchange', resizeBaseFontSize, false);
 }
 
 /**
@@ -138,7 +138,48 @@ function dateFtt(fmt, date) {
         if(new RegExp("("+ k +")").test(fmt))
     fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
     return fmt;
-} 
+}
+
+/**
+ * 检查是否含有非法字符
+ * @param temp_str
+ * @returns {
+ *    Boolean
+ * }
+ */
+function is_forbid(temp_str){
+    // 去除两边空格
+    temp_str = temp_str.replace(/(^\s*)|(\s*$)/g, '');
+    temp_str = temp_str.replace('？','@');
+    temp_str = temp_str.replace('?','@');
+    temp_str = temp_str.replace('！','@');
+    temp_str = temp_str.replace('!','@');
+    temp_str = temp_str.replace('*','@');
+    temp_str = temp_str.replace('--','@');
+    temp_str = temp_str.replace('/','@');
+    temp_str = temp_str.replace('+','@');
+    temp_str = temp_str.replace('\'','@');
+    temp_str = temp_str.replace('\\','@');
+    temp_str = temp_str.replace('$','@');
+    temp_str = temp_str.replace('^','@');
+    temp_str = temp_str.replace('.','@');
+    temp_str = temp_str.replace(';','@');
+    temp_str = temp_str.replace('<','@');
+    temp_str = temp_str.replace('>','@');
+    temp_str = temp_str.replace('=','@');
+    temp_str = temp_str.replace('{','@');
+    temp_str = temp_str.replace('}','@');
+    var forbid_str = new String('@,%,~,&');
+    var forbid_array = new Array();
+    forbid_array = forbid_str.split(',');
+    for (let i = 0; i < forbid_array.length; i++) {
+        if (temp_str.search(new RegExp(forbid_array[i])) != -1) {
+            return false;
+        }
+    }
+    return true;
+}
+
 
 //导出
 export default {
