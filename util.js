@@ -125,7 +125,7 @@ function checkLogin (callback, config = {loginUrl: '', oauth: '', activity_id: 1
  * @return {[type]}      ['2017-12-09 12:22:03:233 4']
  */
 function dateFtt (fmt, date) {
-    if(typeof date === 'String'){
+    if(typeof date === 'string'){
         // 将时间字符串中的-转换为/，因为IOS不支持-格式的时间字符串
         date = new Date(date.replace(/-/g, '/'))
     }
