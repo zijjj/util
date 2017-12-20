@@ -120,11 +120,15 @@ function checkLogin (callback, config = {loginUrl: '', oauth: '', activity_id: 1
 
 /**
  * 格式化时间函数
- * @param  {[String]} fmt  ['yyyy-MM-DD HH:mm:ss:S q']
- * @param  {[Date]}   date [new Data();  时间对象]
- * @return {[String]}      ['2017-12-09 12:22:03:233 4']
+ * @param  {[type]} fmt  ['yyyy-MM-dd hh:mm:ss:S q']
+ * @param  {[type]} String|Date ['2017-01-11 12:12:55' 时间字符串 | '2017/01/11 12:12:55' 时间字符串 | new Data() 时间对象]
+ * @return {[type]}      ['2017-12-09 12:22:03:233 4']
  */
 function dateFtt (fmt, date) {
+    if(typeof date === 'String'){
+        // 将时间字符串中的-转换为/，因为IOS不支持-格式的时间字符串
+        date = new Date(date.replace(/-/g, '/'))
+    }
     var o = {
         'M+': date.getMonth() + 1,                    // 月份
         'd+': date.getDate(),                         // 日
