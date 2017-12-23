@@ -4,7 +4,11 @@ import axios from 'axios';
  * 计算页面rem
  * @param  {Number} manuscriptWidth [设计稿宽度 默认750px]
  */
-function rem (manuscriptWidth = 750) {
+function rem (manuscriptWidth = 750, callback) {
+    if(typeof manuscriptWidth === 'function'){
+        callback = manuscriptWidth
+        manuscriptWidth = 750
+    }
     function resizeBaseFontSize () {
         let rootHtml = document.documentElement
         let deviceWidth = rootHtml.clientWidth
@@ -14,9 +18,15 @@ function rem (manuscriptWidth = 750) {
         }
 
         rootHtml.style.fontSize = deviceWidth / (manuscriptWidth / 100) + 'px'
+
+        if (callback && !callback.init) {
+            callback.init = 1 // 确保回调只执行一次
+            callback()
+        }
     }
 
     resizeBaseFontSize()
+
     window.addEventListener('resize', resizeBaseFontSize, false)
     window.addEventListener('orientationchange', resizeBaseFontSize, false)
 }
