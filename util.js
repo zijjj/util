@@ -77,6 +77,35 @@ function getQueryString (name) {
     return null
 }
 
+// 删除指定查询字符串的值日
+function delQueryString (param) {
+    // 获取URL的查询参数
+    var search = location.search
+
+    function replace(param) {
+        // 删除头部参数
+        var reg = new RegExp('^\\?' + param + '=\\w+&?', 'g')
+        search = search.replace(reg, '?')
+
+        // 删除中间参数
+        reg = new RegExp('&' + param + '=\\w+', 'g')
+        search = search.replace(reg, '')
+
+        // 删除尾部参数
+        reg = new RegExp('&?' + param + '=\\w+$', 'g')
+        search = search.replace(reg, '')
+    }
+
+    if (typeof param === 'string') {
+        replace(param)
+    } else {
+        for (var i = 0, len = param.length; i < len; i++) {
+            replace(param[i])
+        }
+    }
+    return search
+}
+
 // 解决微信端无法使用window.location.reload()刷新页面的方法
 function wechatReload () {
     const version = Math.random() * 10000
