@@ -98,10 +98,12 @@ function delQueryString (param) {
 
     if (typeof param === 'string') {
         replace(param)
-    } else {
+    } else if (param.length > 0) {
         for (var i = 0, len = param.length; i < len; i++) {
             replace(param[i])
         }
+    } else {
+        console.error('delQueryString的参数必须为字符串或者数组')
     }
     return search
 }
