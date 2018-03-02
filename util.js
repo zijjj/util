@@ -3,6 +3,7 @@ import axios from 'axios';
 /**
  * 计算页面rem
  * @param  {Number} manuscriptWidth [设计稿宽度 默认750px]
+ * @param  {Function} callback [设置完根元素字号后的回调函数]
  */
 function rem (manuscriptWidth = 750, callback) {
     if(typeof manuscriptWidth === 'function'){
