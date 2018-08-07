@@ -288,5 +288,7 @@ export default {
     dateFtt,
     deepCopy,
     deepMerge,
-    is_forbid
+    is_forbid,
+    queryStringToObject,
+    objectToQueryString,
 }
