@@ -78,6 +78,25 @@ function getQueryString (name) {
     return null
 }
 
+// 查询字符串转对象
+function queryStringToObject(queryString) {
+    let a = queryString.split(/[&=]/g)
+    let result = {}
+    while (a.length) {
+        result[a.shift()] = a.shift()
+    }
+    return result
+}
+
+// 对象转查询字符串
+function objectToQueryString(object) {
+    let str = ''
+    for (let i in object) {
+        str = str + (str != '' ? '&' : '') + `${i}=${object[i]}`
+    }
+    return str
+}
+
 // 删除指定查询字符串的值日
 function delQueryString (param) {
     // 获取URL的查询参数
