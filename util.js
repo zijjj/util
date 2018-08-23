@@ -214,7 +214,7 @@ function dateFtt (fmt, date) {
 /**
  * 检查是否含有非法字符
  * @param {[String]} [temp_str] ['要检测的字符串']
- * @returns {[Boolean]} [true:包含 | false:不包含]
+ * @return {[Boolean]} [true:包含 | false:不包含]
  */
 function is_forbid (temp_str) {
     // 去除两边空格
@@ -252,7 +252,7 @@ function is_forbid (temp_str) {
 /**
  * 深度拷贝对象
  * @param {[Objec]} [obj] ['要进行深度拷贝的对象']
- * @returns {[Objec]} [拷贝后的新对象]
+ * @return {[Objec]} [拷贝后的新对象]
  */
 function deepCopy (obj) {
     return JSON.parse(JSON.stringify(obj))
@@ -261,7 +261,7 @@ function deepCopy (obj) {
 /**
  * 深度合并对象
  * @param {[Objec]} [obj] ['要进行深度拷贝的对象']
- * @returns {[Objec]} [拷贝后的新对象]
+ * @return {[Objec]} [拷贝后的新对象]
  */
 function deepMerge (obj1, obj2) {
     let key
