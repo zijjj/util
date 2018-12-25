@@ -95,7 +95,7 @@ function objectToQueryString(object) {
   return str
 }
 
-// 删除指定查询字符串的值日
+// 删除指定查询字符串的值
 function delQueryString(param) {
   // 获取URL的查询参数
   var search = location.search
@@ -132,13 +132,6 @@ function wechatReload() {
   location.href = `${location.origin}${location.pathname}?v=${version}`
 }
 
-//封装$ajax
-var $ajax = axios.create({
-  headers: {
-    'X-Requested-With': 'XMLHttpRequest'
-  }
-});
-
 // 检测登录、获取用户信息
 // 参数:
 //   callback 登录后执行的回调函数
@@ -149,7 +142,7 @@ var $ajax = axios.create({
 //   }
 function checkLogin(callback, config = { loginUrl: '', oauth: '', activity_id: 1 }) {
   //注册响应拦截器
-  $ajax.interceptors.response.use((res) => {
+  axios.interceptors.response.use((res) => {
     if (res.data.err == 101) {
       //如果返回101（未登录）
       location.href = `${config.oauth}?activity_id=${config.activity_id}&u=${location.href}`
@@ -165,7 +158,7 @@ function checkLogin(callback, config = { loginUrl: '', oauth: '', activity_id: 1
     typeof callback === 'function' && callback()
   } else {
     //生产环境
-    $ajax.get(config.loginUrl, {
+    axios.get(config.loginUrl, {
       params: { format: 'json', config.activity_id }
     }, function (res) {
       if (res.data.err == 0) {
@@ -323,7 +316,6 @@ export default {
   delQueryString,
   wechatReload,
   checkLogin,
-  $ajax,
   dateFtt,
   deepCopy,
   deepMerge,
