@@ -128,8 +128,12 @@ function delQueryString(param) {
 
 // 解决微信端无法使用window.location.reload()刷新页面的方法
 function wechatReload() {
-  const version = Math.random() * 10000
-  location.href = `${location.origin}${location.pathname}?v=${version}`
+  var version = Math.random() * 10000
+  if (location.search) {
+    location.href = `${location.href}&v=${version}`
+  } else {
+    location.href = `${location.href}?v=${version}`
+  }
 }
 
 // 检测登录、获取用户信息
