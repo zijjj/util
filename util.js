@@ -66,6 +66,27 @@ function delCookie(name) {
   document.cookie = name + '=' + cval + '; expires=' + exp.toUTCString() + '; path=/'
 }
 
+// 获取指定元素距离屏幕的距离
+function getAbsoluteLocation (element) {
+  if (arguments.length != 1 || element == null) {
+    return null
+  }
+  let offsetTop = element.offsetTop
+  let offsetLeft = element.offsetLeft
+  let offsetWidth = element.offsetWidth
+  let offsetHeight = element.offsetHeight
+  while (element = element.offsetParent) {
+    offsetTop += element.offsetTop
+    offsetLeft += element.offsetLeft
+  }
+  return {
+    top: offsetTop,
+    left: offsetLeft,
+    offsetWidth: offsetWidth,
+    offsetHeight: offsetHeight
+  }
+}
+
 // 获取查询字符串的值
 function getQueryString(name) {
   var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i')
@@ -327,5 +348,6 @@ export default {
   queryStringToObject,
   objectToQueryString,
   secToTime,
-  timeToSec
+  timeToSec,
+  getAbsoluteLocation
 }
