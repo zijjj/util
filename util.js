@@ -380,6 +380,30 @@ function isPc () {
 }
 
 
+/**
+ * 打印指定区域内容
+ */
+function print (printContainer) {
+  var iframe = document.createElement('iframe')
+  iframe.setAttribute('style', 'position: absolute; top: -99999px; left: -99999px;')
+  document.body.appendChild(iframe)
+
+  var win = iframe.contentWindow || iframe.contentDocument
+  var doc = iframe.contentDocument || iframe.contentWindow.document
+
+  var headHtml = document.head.innerHTML
+  doc.head.innerHTML = headHtml
+  doc.body.innerHTML = document.getElementById(printContainer).outerHTML
+  doc.body.onload = function () {
+    win.print()
+  }
+}
+
+// 验证身份证号是否合法
+function validateIdCard (idCard) {
+  return /(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{2}$)/.test(idCard)
+}
+
 //导出
 export default {
   rem,
@@ -388,6 +412,7 @@ export default {
   delCookie,
   getQueryString,
   delQueryString,
+  validateIdCard,
   wechatReload,
   isWeixin,
   isPc,
@@ -396,6 +421,7 @@ export default {
   deepCopy,
   deepMerge,
   is_forbid,
+  print,
   queryStringToObject,
   objectToQueryString,
   secToTime,
