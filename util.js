@@ -351,6 +351,34 @@ function typeOf(obj) {
   return map[toString.call(obj)];
 }
 
+// 判断是否是微信端
+function isWeixin () {
+  let ua = navigator.userAgent.toLowerCase()
+  if (ua.match(/MicroMessenger/i) === 'micromessenger') {
+    return true
+  } else {
+    return false
+  }
+}
+
+// 判断是否是PC端
+function isPc () {
+  let system = {
+    win: false,
+    mac: false,
+    xll: false
+  }
+  let p = navigator.platform
+  system.win = p.indexOf('Win') == 0
+  system.mac = p.indexOf('Mac') == 0
+  system.x11 = (p == 'X11') || (p.indexOf('Linux') == 0)
+  if (system.win || system.mac || system.xll) {
+    return true
+  } else {
+    return false
+  }
+}
+
 
 //导出
 export default {
@@ -361,6 +389,8 @@ export default {
   getQueryString,
   delQueryString,
   wechatReload,
+  isWeixin,
+  isPc,
   checkLogin,
   dateFtt,
   deepCopy,
