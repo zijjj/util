@@ -3,7 +3,7 @@
  * @param {Number} manuscriptWidth [设计稿宽度 默认750px]
  * @param {Function} callback [设置完根元素字号后的回调函数]
  */
-function rem(manuscriptWidth = 750, callback) {
+export function rem(manuscriptWidth = 750, callback) {
   if (typeof manuscriptWidth === 'function') {
     callback = manuscriptWidth
     manuscriptWidth = 750
@@ -33,7 +33,7 @@ function rem(manuscriptWidth = 750, callback) {
 /**
  * 原生js操作cookie
  */
-function addCookie(objName, objValue, objHours) {
+export function addCookie(objName, objValue, objHours) {
   // 添加cookie
   var str = objName + '=' + escape(objValue)
   // objHours为0时不设定过期时间，浏览器关闭时cookie自动消失，这种cookie被叫做会话cookie
@@ -47,7 +47,7 @@ function addCookie(objName, objValue, objHours) {
   // console.log('添加cookie成功');
 }
 
-function getCookie(objName) {
+export function getCookie(objName) {
   // 获取指定名称的cookie的值
   var arrStr = document.cookie.split('; ')
   for (var i = 0; i < arrStr.length; i++) {
@@ -58,7 +58,7 @@ function getCookie(objName) {
   }
 }
 
-function delCookie(name) {
+export function delCookie(name) {
   // 为了删除指定名称的cookie，可以将其过期时间设定为一个过去的时间
   var exp = new Date()
   exp.setTime(exp.getTime() - 1)
@@ -66,8 +66,81 @@ function delCookie(name) {
   document.cookie = name + '=' + cval + '; expires=' + exp.toUTCString() + '; path=/'
 }
 
+/**
+ * 根据生日判断年龄，返回周岁
+ * @param {birthday} 生日 1986-01-18
+ * @returns {Number}
+ */
+export function jsGetAge(birthday) {
+  let age
+  let strBirthdayArr = birthday.split('-')
+  let birthYear = strBirthdayArr[0]
+  let birthMonth = strBirthdayArr[1]
+  let birthDay = strBirthdayArr[2]
+  let d = new Date()
+  let nowYear = d.getFullYear()
+  let nowMonth = d.getMonth() + 1
+  let nowDay = d.getDate()
+  if (nowYear === birthYear) {
+    age = 0 // 同年 则为0岁
+  } else {
+    let ageDiff = nowYear - birthYear // 年之差
+    if (ageDiff > 0) {
+      if (nowMonth == birthMonth) {
+        let dayDiff = nowDay - birthDay // 日之差
+        if (dayDiff < 0) {
+          age = ageDiff - 1
+        } else {
+          age = ageDiff
+        }
+      } else {
+        let monthDiff = nowMonth - birthMonth // 月之差
+        if (monthDiff < 0) {
+          age = ageDiff - 1
+        } else {
+          age = ageDiff
+        }
+      }
+    } else {
+      age = 1 // 返回-1 表示出生日期输入错误 晚于今天
+    }
+  }
+  if (age <= 0) {
+    age = 1
+  }
+  return age // 返回周岁年龄
+}
+
+// 根据身份证号，获取生日、性别
+export function idCardNo(val){
+  let reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/
+  if (reg.test(val)) {
+    let birthdayno, birthdaytemp, sexno
+    if (val.length === 18) {
+      birthdayno = val.substring(6, 14)
+      sexno = val.substring(16, 17)
+    } else if (val.length === 15) {
+      birthdaytemp = val.substring(6, 12)
+      birthdayno = '19' + birthdaytemp
+      sexno = val.substring(14, 15)
+    }
+    let tempid = sexno % 2
+    if (tempid === 0) {
+      this.sexName = '女'
+      this.sexCode = '2'
+    } else {
+      this.sexName = '男'
+      this.sexCode = '1'
+    }
+    return {
+      birthday: birthdayno.substring(0, 4) + '-' + birthdayno.substring(4, 6) + '-' + birthdayno.substring(6, 8),
+      age: jsGetAge(this.birthday)
+    }
+  }
+}
+
 // 获取指定元素距离屏幕的距离
-function getAbsoluteLocation (element) {
+export function getAbsoluteLocation (element) {
   if (arguments.length != 1 || element == null) {
     return null
   }
@@ -88,7 +161,7 @@ function getAbsoluteLocation (element) {
 }
 
 // 获取查询字符串的值
-function getQueryString(name) {
+export function getQueryString(name) {
   var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i')
   var r = window.location.search.substr(1).match(reg)
   if (r != null) {
@@ -98,7 +171,7 @@ function getQueryString(name) {
 }
 
 // 查询字符串转对象
-function queryStringToObject(queryString) {
+export function queryStringToObject(queryString) {
   let a = queryString.split(/[&=]/g)
   let result = {}
   while (a.length) {
@@ -108,7 +181,7 @@ function queryStringToObject(queryString) {
 }
 
 // 对象转查询字符串
-function objectToQueryString(object) {
+export function objectToQueryString(object) {
   let str = ''
   for (let i in object) {
     str = str + (str != '' ? '&' : '') + `${i}=${object[i]}`
@@ -117,7 +190,7 @@ function objectToQueryString(object) {
 }
 
 // 删除指定查询字符串的值
-function delQueryString(param) {
+export function delQueryString(param) {
   // 获取URL的查询参数
   var search = location.search
 
@@ -148,7 +221,7 @@ function delQueryString(param) {
 }
 
 // 解决微信端无法使用window.location.reload()刷新页面的方法
-function wechatReload() {
+export function wechatReload() {
   var version = Math.random() * 10000
   if (location.search) {
     location.href = `${location.href}&v=${version}`
@@ -165,7 +238,7 @@ function wechatReload() {
 //      oauth OAuth地址
 //      activity_id活动id 默认为1 
 //   }
-function checkLogin(callback, config = { loginUrl: '', oauth: '', activity_id: 1 }) {
+export function checkLogin(callback, config = { loginUrl: '', oauth: '', activity_id: 1 }) {
   //注册响应拦截器
   axios.interceptors.response.use((res) => {
     if (res.data.err == 101) {
@@ -201,7 +274,7 @@ function checkLogin(callback, config = { loginUrl: '', oauth: '', activity_id: 1
  * @param  {[type]} String|Date ['2017-01-11 12:12:55' 时间字符串 | '2017/01/11 12:12:55' 时间字符串 | new Data() 时间对象]
  * @return {[type]}      ['2017-12-09 12:22:03:233 4']
  */
-function dateFtt(fmt, date) {
+export function dateFtt(fmt, date) {
   if (typeof date === 'string') {
     // 将时间字符串中的-转换为/，因为IOS不支持-格式的时间字符串
     date = new Date(date.replace(/-/g, '/'))
@@ -232,7 +305,7 @@ function dateFtt(fmt, date) {
  * @param {[String]} [temp_str] ['要检测的字符串']
  * @return {[Boolean]} [true:包含 | false:不包含]
  */
-function is_forbid(temp_str) {
+export function is_forbid(temp_str) {
   // 去除两边空格
   temp_str = temp_str.replace(/(^\s*)|(\s*$)/g, '')
   temp_str = temp_str.replace('？', '@')
@@ -270,7 +343,7 @@ function is_forbid(temp_str) {
  * @param {[Objec]} [obj] ['要进行深度拷贝的对象']
  * @return {[Objec]} [拷贝后的新对象]
  */
-function deepCopy(obj) {
+export function deepCopy(obj) {
   return JSON.parse(JSON.stringify(obj))
 }
 
@@ -279,7 +352,7 @@ function deepCopy(obj) {
  * @param {[Objec]} [obj] ['要进行深度拷贝的对象']
  * @return {[Objec]} [拷贝后的新对象]
  */
-function deepMerge(obj1, obj2) {
+export function deepMerge(obj1, obj2) {
   let key
   for (key in obj2) {
     // 如果target(也就是obj1[key])存在，且是对象的话再去调用deepMerge，否则就是obj1[key]里面没这个对象，需要与obj2[key]合并
@@ -294,7 +367,7 @@ function deepMerge(obj1, obj2) {
  * @param {[Number]} [s] ['秒数 如：86400']
  * @returns {String} 格式化后的时分秒，如：'24:00:00.00'
  */
-function secToTime(s) {
+export function secToTime(s) {
   var t
   if (s > -1) {
     var hour = Math.floor(s / 3600)
@@ -318,7 +391,7 @@ function secToTime(s) {
  * @param {String} time 时间字符串 '24:00:00'
  * @returns {Number} 秒数 如：86400
  */
-function timeToSec(time) {
+export function timeToSec(time) {
   var s = ''
 
   var hour = time.split(':')[0]
@@ -334,27 +407,27 @@ function timeToSec(time) {
  * 判断参数的数据类型
  * @param {*} obj 
  */
-function typeOf(obj) {
+export function typeOf(obj) {
   const toString = Object.prototype.toString;
   const map = {
-      '[object Boolean]'  : 'boolean',
-      '[object Number]'   : 'number',
-      '[object String]'   : 'string',
-      '[object Function]' : 'function',
-      '[object Array]'    : 'array',
-      '[object Date]'     : 'date',
-      '[object RegExp]'   : 'regExp',
-      '[object Undefined]': 'undefined',
-      '[object Null]'     : 'null',
-      '[object Object]'   : 'object'
-  };
-  return map[toString.call(obj)];
+    '[object Boolean]'  : 'boolean',
+    '[object Number]'   : 'number',
+    '[object String]'   : 'string',
+    '[object Function]' : 'function',
+    '[object Array]'    : 'array',
+    '[object Date]'     : 'date',
+    '[object RegExp]'   : 'regExp',
+    '[object Undefined]': 'undefined',
+    '[object Null]'     : 'null',
+    '[object Object]'   : 'object'
+  }
+  return map[toString.call(obj)]
 }
 
 // 判断是否是微信端
-function isWeixin () {
+export function isWeixin () {
   let ua = navigator.userAgent.toLowerCase()
-  if (ua.match(/MicroMessenger/i) === 'micromessenger') {
+  if (ua.match(/MicroMessenger/i) == 'micromessenger') {
     return true
   } else {
     return false
@@ -362,7 +435,7 @@ function isWeixin () {
 }
 
 // 判断是否是PC端
-function isPc () {
+export function isPc () {
   let system = {
     win: false,
     mac: false,
@@ -383,7 +456,7 @@ function isPc () {
 /**
  * 打印指定区域内容
  */
-function print (printContainer) {
+export function print (printContainer) {
   var iframe = document.createElement('iframe')
   iframe.setAttribute('style', 'position: absolute; top: -99999px; left: -99999px;')
   document.body.appendChild(iframe)
@@ -400,32 +473,6 @@ function print (printContainer) {
 }
 
 // 验证身份证号是否合法
-function validateIdCard (idCard) {
+export function validateIdCard (idCard) {
   return /(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{2}$)/.test(idCard)
-}
-
-//导出
-export default {
-  rem,
-  addCookie,
-  getCookie,
-  delCookie,
-  getQueryString,
-  delQueryString,
-  validateIdCard,
-  wechatReload,
-  isWeixin,
-  isPc,
-  checkLogin,
-  dateFtt,
-  deepCopy,
-  deepMerge,
-  is_forbid,
-  print,
-  queryStringToObject,
-  objectToQueryString,
-  secToTime,
-  timeToSec,
-  getAbsoluteLocation,
-  typeOf
 }
